@@ -1,0 +1,44 @@
+
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+    creationTimestamp: null
+    name: wf--6ce71a38-run-clone-build-push
+spec:
+    resourcetemplates:
+        - apiVersion: tekton.dev/v1beta1
+          kind: PipelineRun
+          metadata:
+            creationTimestamp: null
+            name: wf--6ce71a38-clone-build-push-$(uid)
+          spec:
+            params:
+                - name: image-registry-url
+                  value: quay.io/parodos
+            pipelineRef:
+                name: wf--6ce71a38-clone-build-push
+            serviceAccountName: wf--6ce71a38-clone-push
+            workspaces:
+                - name: wf--6ce71a38-shared-data
+                  volumeClaimTemplate:
+                    metadata:
+                        creationTimestamp: null
+                    spec:
+                        accessModes:
+                            - ReadWriteOnce
+                        resources:
+                            requests:
+                                storage: 1Gi
+                        storageClassName: default
+                    status: {}
+                - name: git-credentials
+                  secret:
+                    secretName: git-credentials
+                - name: docker-credentials
+                  secret:
+                    secretName: docker-credentials
+          status: {}
+status: {}
+
+...

@@ -1,0 +1,4 @@
+resources:
+  - wf--6ce71a38-ingress.yaml
+  - demo-deployment.yaml
+  - demo-service.yaml
